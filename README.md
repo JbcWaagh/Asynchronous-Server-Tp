@@ -7,11 +7,11 @@ C'est à dire l'utilisation de callback fonctions, de routing basé sur l'url et
 
 ## Instructions d'instalation 
 
-Prérequis: connection internet, node.js installé sur le système
+Prérequis: connexion internet, node.js installé sur le système
 
 Récuperer les deux fichier .js du git est les, tous les deux, placer dans un même répertoire.  
 Ouvrir ce répertoire dans le terminal et exécuté la commande 'node index.js'.  
 Si la commande c'est exécuté sans problème ouvrir un naviagateur internet et entrer l'url suivant ' http://localhost:8080 '  
 Les instructions pour utiliser le site ce trouve sur celui-ci.
 
-## Contribution : Jean-Baptiste Crespo
+### Contribution : Jean-Baptiste Crespo
