@@ -1,7 +1,7 @@
 {
   "name": "tp2",
   "version": "1.0.0",
-  "description": "",
+  "description": "Le but de ce tp est de prendre en main node.js via les principes de bases présentés en classe.  \r C'est à dire l'utilisation de callback fonctions, de routing basé sur l'url et la création/l'utilisation de module.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,5 +10,13 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.4"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JbcWaagh/Asynchronous-Server-Tp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/JbcWaagh/Asynchronous-Server-Tp/issues"
+  },
+  "homepage": "https://github.com/JbcWaagh/Asynchronous-Server-Tp#readme"
 }
