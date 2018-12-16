@@ -9,7 +9,12 @@
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {},
+  "dependencies": {
+    "encoding-down": "^5.0.4",
+    "level-ws": "^1.0.0",
+    "leveldown": "^4.0.1",
+    "levelup": "^3.1.1"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/JbcWaagh/Asynchronous-Server-Tp.git"
@@ -20,6 +25,7 @@
   "homepage": "https://github.com/JbcWaagh/Asynchronous-Server-Tp#readme",
   "devDependencies": {
     "@types/express": "^4.16.0",
+    "@types/levelup": "^3.1.0",
     "@types/node": "^10.12.15",
     "express": "^4.16.4",
     "nodemon": "^1.18.9",

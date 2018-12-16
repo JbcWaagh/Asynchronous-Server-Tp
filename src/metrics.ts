@@ -1,3 +1,5 @@
+import { LevelDb } from './leveldb'
+
 export class Metric {
   public timestamp: string
   public value: number
@@ -9,11 +11,9 @@ export class Metric {
 }
 
 export class MetricsHandler {
-  static get(callback: (error: Error | null, result?: Metric[]) => void) {
-    const result = [
-      new Metric('2013-11-04 14:00 UTC', 12),
-      new Metric('2013-11-04 14:30 UTC', 15)
-    ]
-    callback(null, result)
+  private db: any 
+
+  constructor(dbPath: string) {
+    this.db = LevelDb.open(dbPath)
   }
 }
