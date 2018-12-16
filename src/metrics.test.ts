@@ -1,10 +1,17 @@
-import 'chai'
-import { expect } from 'chai';
+import { expect } from 'chai'
+import { Metric, MetricsHandler } from './metrics'
+import { LevelDb } from "./leveldb"
 
-const a: number = 0
+const dbPath: string = 'db_test'
+var dbMet: MetricsHandler
 
 describe('Metrics', function () {
-  it('should save and get', function () {
-    expect(a).to.equal(0)
+  before(function () {
+    LevelDb.clear(dbPath)
+    dbMet = new MetricsHandler(dbPath)
+  })
+
+  after(function () {
+    dbMet.db.close()
   })
 })

@@ -12,7 +12,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/del": "^3.0.1",
     "body-parser": "^1.18.3",
+    "del": "^3.0.0",
     "encoding-down": "^5.0.4",
     "level-ws": "^1.0.0",
     "leveldown": "^4.0.1",
