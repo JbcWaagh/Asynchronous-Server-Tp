@@ -1,6 +1,6 @@
 import { LevelDb } from "./leveldb"
 import WriteStream from 'level-ws'
-const bcrypt = require('bcrypt');
+import bcrypt from 'bcrypt';
 
 export class User {
     public username: string
