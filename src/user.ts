@@ -22,7 +22,7 @@ export class User {
       }
     
       public setPassword(toSet: string): void {
-        const hash=bcrypt.hashSync(toSet,10) // on hash le pswd du l'utilisateur avant de le stocké
+        const hash=bcrypt.hashSync(toSet,10) // on hash le pswd du l'utilisateur avant de le stocker
         this.password=hash
       }
     
@@ -31,7 +31,7 @@ export class User {
       }
     
       public validatePassword(toValidate: String): boolean {
-        if(bcrypt.compareSync(toValidate, this.password)) {
+        if(bcrypt.compareSync(toValidate, this.password)) { 
             return true
            } else {
             return false
@@ -58,7 +58,7 @@ export class UserHandler {
   }
 
   public delete(username: string, callback: (err: Error | null) => void) {
-    // TODO
+
   }
 
   constructor(path: string) {
