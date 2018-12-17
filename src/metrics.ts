@@ -12,7 +12,7 @@ export class Metric {
 }
 
 export class MetricsHandler {
-  private db: any
+  public db: any
   private dbPath:string
 
   constructor(dbPath: string) {

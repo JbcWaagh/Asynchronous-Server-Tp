@@ -88,7 +88,6 @@ authRouter.post('/login', (req: any, res: any, next: any) => {
             } else {
                 req.session.loggedIn = true
                 req.session.user = result
-                // res.status(200).send
                 res.redirect('/')
             }
         })}
@@ -119,6 +118,7 @@ authRouter.post('/signup', (req: any, res: any, next: any) => {
                     }
                     else
                         res.status(200).send("New account created you may login now")
+                        res.redirect('/login')
                 })}
         })
     }})

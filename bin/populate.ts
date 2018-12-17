@@ -2,6 +2,12 @@
 
 import { Metric, MetricsHandler } from '../src/metrics'
 import { User, UserHandler } from '../src/user'
+import {LevelDb} from "../src/leveldb"
+
+LevelDb.clear('db/metrics')
+LevelDb.clear('db/users')
+LevelDb.clear('db/sessions')
+console.log('clear of pre-existing data')
 
 const met = [
   new Metric(`${new Date('2013-11-04 14:00 UTC').getTime()}`, 12),

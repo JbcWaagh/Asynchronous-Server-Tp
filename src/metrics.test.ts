@@ -24,7 +24,7 @@ describe('Metrics', function () {
 
   describe('#save', function () {
     it('should create and save a metric in the db', function () {
-      dbMet.save(0,testMetric,function (err: Error | null, result?: Metric[]) {
+      dbMet.save("0",testMetric,function (err: Error | null, result?: Metric[]) {
         expect(err).to.be.null
         expect(result).to.not.be.undefined
         expect(result).to
