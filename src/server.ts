@@ -16,14 +16,24 @@ const LevelStore = levelSession(session)
 
 app.use(morgan('dev'))
 
-app.get('/', (req: any, res: any) => {
-  res.send('hello world')
-})
+const authCheck = (req: any, res: any, next: any) => {
+    if (req.session.loggedIn) {
+        next()
+    } else res.redirect('/auth/login')
+}
+
 
 app.listen('8080', (err: Error) => {
   if (err) throw err
   console.log('server is listening on port 8080')
 })
+
+app.use(session({
+    secret: 'this is a very secret secret phrase',
+    store: new LevelStore('./db/sessions'),
+    resave: true,
+    saveUninitialized: true
+  }))
 
 app.get('/metrics/:id', (req: any, res: any) => {
   Mhandler.get(req.params.id,(err: Error | null, result?: any) => {
