@@ -51,11 +51,8 @@ app.use('/auth', authRouter)
 
 
 app.get('/', authCheck,(req: any, res: any) => {
-    if(req.session.loggedIn){
-        res.render('home', {name: req.session.user.username})}
-    else {
-        res.render('home', {name: 'unconnected'})
-    }
+   
+        res.render('home', {name: req.session.user.username})
 })
 
 

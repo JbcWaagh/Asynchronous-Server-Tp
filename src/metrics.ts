@@ -32,28 +32,35 @@ export class MetricsHandler {
   }
 
 
-  public get(key: string, callback: (error: Error | null, result?: Metric[]) => void) {
-    const rs = this.db.createReadStream(key)
-    var met: Metric[] = [];
-    rs.on("error", callback)
-    rs.on("end", (err: Error) => { callback(null, met); })
-    rs.on("data", (data: any) => {
-      const [, key2, timestamp] = data.key.split(":")
-      if (key === key2) {
-        met.push(new Metric(timestamp, data.value))
-      }
-    })
-  }
+  public get(key:string, callback: (error: Error | null, result?: Metric[]) => void) {
 
+    const rs = this.db.createReadStream()
+    var met: Metric[] = []
+
+    rs
+        .on("error", (err: Error)=>{
+            callback(err, met)
+        })
+
+        .on("end", () => {
+            callback(null, met)
+        })
+        .on("data", (data: any) => {
+            const [, key2, timestamp] = data.key.split(":")
+            if (key === key2) {
+                met.push(new Metric(timestamp, data.value))       }
+
+        })
+}
 
   public delete(key: string, timestamp: string, callback: (error: Error | null) => void) {
     const rs = this.db.createReadStream();
     rs.on("error", callback)
     rs.on("end", (err: Error) => { callback(null); })
     rs.on("data", (data: any) => {
-      const [, keyC, timestampC] = data.key.split(":")
+      const [, keyTemp, timestampTemp] = data.key.split(":")
 
-      if (keyC == key && timestampC == timestamp) {
+      if (keyTemp == key && timestampTemp == timestamp) {
         this.db.del(data.key)
       }
     })
