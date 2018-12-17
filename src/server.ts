@@ -16,7 +16,7 @@ const authRouter = express.Router()
 const mRouter = express.Router()
 const bodyParser = require('body-parser')
 const path = require('path')
-
+app.use(express.static(__dirname + '/../node_modules/bootstrap/dist'));
 
 const metricsHandler= new MetricsHandler('./db/metrics');
 const authCheck = (req: any, res: any, next: any) => {
@@ -106,7 +106,7 @@ authRouter.post('/signup', (req: any, res: any, next: any) => {
         const u = new User(username, email, password,false)
         dbUser.get(username,(err:Error|null,result?:User)=>{
             if(result!==undefined){
-                res.status(400).send("username already exist")
+                res.status(400).send("username already exist, try again with different username")
             }
             else{
                 dbUser.save(u, (err: Error | null) => {
@@ -115,7 +115,7 @@ authRouter.post('/signup', (req: any, res: any, next: any) => {
                     }
                     else
                         res.status(200).send("New account created you may login now")
-                        res.redirect('/login')
+                        
                 })}
         })
     }})

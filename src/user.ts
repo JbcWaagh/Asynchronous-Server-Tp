@@ -67,8 +67,7 @@ export class UserHandler {
 
 
   public save(user: User, callback: (err: Error | null) => void) {
-    console.log("save")
-
+    
     this.db.put(`user:${user.username}`, `${user.email}:${user.getPassword()}`, (err: Error | null) => {
       if (err)
         callback(err)
