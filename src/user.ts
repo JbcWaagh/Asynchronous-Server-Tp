@@ -43,13 +43,13 @@ export class User {
 export class UserHandler {
   public db: any
 
-  public get(username: string, callback: (err: Error | null, result?: User) => void) {
-    this.db.get(`user:${username}`, function (err: Error, data: any) {
-      if (err) callback(err)
-      else if (data === undefined) callback(null, data)
-      callback(null, User.fromDb(username, data))
+  public get(username: string,callback: (err: Error | null, result?: User) => void) {
+    this.db.get(`user:${username}`, function(err: Error, data: any) {
+      if (err || data === undefined) callback(null, undefined);
+      else callback(null, User.fromDb(username, data));
     })
   }
+
 
   public save(user: User, callback: (err: Error | null) => void) {
     this.db.put(`user:${user.username}`, `${user.getPassword}:${user.email}`, (err: Error | null) => {
@@ -58,7 +58,10 @@ export class UserHandler {
   }
 
   public delete(username: string, callback: (err: Error | null) => void) {
-
+    this.db.del(`user:${username}`,(err: Error | null) => {
+        callback(err)
+      }
+    )
   }
 
   constructor(path: string) {

@@ -13,11 +13,11 @@ export class Metric {
 
 export class MetricsHandler {
   public db: any
-  private dbPath:string
+  private dbPath: string
 
   constructor(dbPath: string) {
     this.db = LevelDb.open(dbPath)
-    this.dbPath =dbPath
+    this.dbPath = dbPath
 
   }
 
@@ -36,22 +36,27 @@ export class MetricsHandler {
     const rs = this.db.createReadStream(key)
     var met: Metric[] = [];
     rs.on("error", callback)
-    rs.on("end", (err: Error) => {callback(null, met);})
-    rs.on("data", (data:any) => {
-        console.log(data)
+    rs.on("end", (err: Error) => { callback(null, met); })
+    rs.on("data", (data: any) => {
+      const [, key2, timestamp] = data.key.split(":")
+      if (key === key2) {
+        met.push(new Metric(timestamp, data.value))
+      }
     })
   }
 
-  
-  public delete(key: string,callback: (error: Error | null) => void){
-    const rs= this.db.createReadStream();
-     rs.on("error", callback)
-     rs.on("end", (err: Error) => { callback(null);})
-     rs.on("data", (data: any) => {
-        this.db.del(data.key);
-    });
+
+  public delete(key: string, timestamp: string, callback: (error: Error | null) => void) {
+    const rs = this.db.createReadStream();
+    rs.on("error", callback)
+    rs.on("end", (err: Error) => { callback(null); })
+    rs.on("data", (data: any) => {
+      const [, keyC, timestampC] = data.key.split(":")
+
+      if (keyC == key && timestampC == timestamp) {
+        this.db.del(data.key)
+      }
+    })
   }
-
-
 }
 
