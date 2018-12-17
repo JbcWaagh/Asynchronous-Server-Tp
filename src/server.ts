@@ -13,7 +13,7 @@ const Mhandler= new MetricsHandler('./db');
 const LevelStore = levelSession(session)
 const dbUser: UserHandler = new UserHandler('./db/users')
 const authRouter = express.Router()
-const metricsRouter = express.Router()
+const mRouter = express.Router()
 const bodyParser = require('body-parser')
 const path = require('path')
 
@@ -123,5 +123,39 @@ authRouter.post('/signup', (req: any, res: any, next: any) => {
         })
     }})
 
+///////////////////////////////////////////
+//metrics router for  viewing the data ///
+/////////////////////////////////////////
+
+app.use('/metrics', mRouter)
+
+//Check if auth is ok
+mRouter.use(function (req: any, res: any, next: any) {
+    authCheck(req,res,next)
+})
 
 
+// Get user own metrics
+mRouter.get('/',(req:any,res:any,next:any)=>{
+
+  metricsHandler.get(req.session.user.username,(err: Error|null,metrics:any)=>{
+      console.log("access metrics")
+      if(err)
+          throw err
+      else{
+          res.render('metrics',{metrics:metrics,user:req.session.user.username})}
+  })
+})
+
+// Create new metric for the user
+mRouter.post ('/',(req:any,res:any,next:any)=>{
+  if(req.body.timestamp===""||req.body.value==="")
+      res.status(400).send("Fill the form to add a new metric")
+  else{
+      metricsHandler.save(req.session.user.username,[req.body],(err:Error|null)=>{
+          if(err)
+              res.status(401).send("error metric was not created" )
+          else
+              res.redirect('/metrics/')
+      })}
+})

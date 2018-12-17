@@ -6,15 +6,14 @@
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/style.css">
-    <style>
-    </style>
+    
 </head>
 <body class="bg-light">
 
 <div id="form">
     <p>Please login to your account</p>
     <hr/>
-    <form action="/login" method="post">
+    <form action="/auth/login" method="post">
       <div class="form-group">
         <label for="form_username">Username</label>
         <input id="form_username" type="text" name="username" />
@@ -26,9 +25,12 @@
       <button class="btn btn-primary btn-block" type="submit" value="Submit">Connect</button>
     </form>
     <hr/>
-    <button class="btn btn-success btn-block" type="submit" href="/signup" onClick='document.location.href="/signup"'>
+    <p> Not registered yet ?</p>
+    <form action="/auth/signup" method="GET">
+    <button class="btn btn-success btn-block" type="submit" >
       Create an account
     </button>
+  </form>
   </div>
 </body>
 </html>
