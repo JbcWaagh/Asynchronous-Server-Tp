@@ -4,14 +4,16 @@
     <% include partials/head %>
 </head>
 <body class="bg-light">
-<div id="form">
-    <p>Welcome <%= name %> </p>
+<div id="form" class="container text-center">
+    <h2>Welcome <%= name %> </h2>
+
+    <p>you may now access your metrics freely, you can also logout at any time</p>
 
     <!-- a href="/auth/login">login -->
     </br>
-    <a href="/logout">logout</a>
-    </br>
-    <a href="/metrics">metrics</a>
+    <a href="/logout" class="btn btn-danger">logout</a>
+    <h4>or</h4>
+    <a href="/metrics" class="btn btn-info">metrics</a>
 
     <hr/>
 </div>

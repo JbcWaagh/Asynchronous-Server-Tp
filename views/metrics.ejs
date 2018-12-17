@@ -7,7 +7,21 @@
 
 </head>
 <body>
-Welcome <%= user %> , here are your metrics
-</br>
-<a href="/logout">logout</a>
-</body>
+<h2 class="text-center"><%= user %>, here are your metrics</h2> 
+<div class="container text-center bg-light">
+
+  
+    <form action="/metrics/" method="post">
+        <div class="form-group">
+            <label for="form_timestamp">timeStamp</label>
+            <input id="form_timestamp" type="date" name="timestamp" required="required"/>
+        </div>
+        <div class="form-group">
+            <label for="form_value">value</label>
+            <input id="form_value" type="number" name="value" required="required"/>
+        </div>
+        <button class="btn btn-success" type="submit" value="submit">Create</button>
+    </form>
+ </div>
+
+   
