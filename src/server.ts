@@ -44,7 +44,7 @@ app.use(session({
 app.use(bodyParser.json())
 app.use(morgan('dev'))
 app.use(bodyParser.urlencoded())
-app.use(express.static(path.join(__dirname, '/../public')))
+
 
 
 app.use('/auth', authRouter)
@@ -52,9 +52,9 @@ app.use('/auth', authRouter)
 
 app.get('/', authCheck,(req: any, res: any) => {
     if(req.session.loggedIn){
-        res.render('index', {name: req.session.user.username})}
+        res.render('home', {name: req.session.user.username})}
     else {
-        res.render('index', {name: 'unconnected'})
+        res.render('home', {name: 'unconnected'})
     }
 })
 
@@ -103,7 +103,7 @@ authRouter.post('/login', (req: any, res: any, next: any) => {
 authRouter.post('/signup', (req: any, res: any, next: any) => {
     const { username, email,password  } = req.body
     if(username===""||email===""||password==""){
-        res.status(401).send("Please enter all the info necessary to the new account)}
+        res.status(401).send("Please enter all the info necessary to the new account")}
     else{
         const u = new User(username, email, password,false)
         dbUser.get(username,(err:Error|null,result?:User)=>{
