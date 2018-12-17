@@ -16,6 +16,7 @@
     "bcrypt": "^3.0.2",
     "body-parser": "^1.18.3",
     "del": "^3.0.0",
+    "ejs": "^2.6.1",
     "encoding-down": "^5.0.4",
     "express-session": "^1.15.6",
     "level": "^4.0.0",

@@ -1,54 +1,125 @@
 import express = require('express')
 import { MetricsHandler } from './metrics'
-import bodyparser = require('body-parser')
 import session = require('express-session')
 import levelSession = require('level-session-store')
 import morgan = require('morgan')
+import { UserHandler, User } from './user'
 
 
 
 const app = express()
-app.use(bodyparser.json())
-app.use(bodyparser.urlencoded())
 const port: string = process.env.PORT || '8080'
 const Mhandler= new MetricsHandler('./db');
 const LevelStore = levelSession(session)
+const dbUser: UserHandler = new UserHandler('./db/users')
+const authRouter = express.Router()
+const metricsRouter = express.Router()
+const bodyParser = require('body-parser')
+const path = require('path')
 
-app.use(morgan('dev'))
 
+const metricsHandler= new MetricsHandler('./db/metrics');
 const authCheck = (req: any, res: any, next: any) => {
     if (req.session.loggedIn) {
         next()
     } else res.redirect('/auth/login')
 }
 
+app.set('views', "./views")
+app.set('view engine', 'ejs')
 
-app.listen('8080', (err: Error) => {
-  if (err) throw err
-  console.log('server is listening on port 8080')
+app.listen(port, (err: Error) => {
+    if (err) {
+        throw err
+    }
+    console.log(`server is listening on port ${port}`)
 })
 
 app.use(session({
-    secret: 'this is a very secret secret phrase',
+    secret: 'my very secret phrase',
     store: new LevelStore('./db/sessions'),
     resave: true,
     saveUninitialized: true
-  }))
+}))
+app.use(bodyParser.json())
+app.use(morgan('dev'))
+app.use(bodyParser.urlencoded())
+app.use(express.static(path.join(__dirname, '/../public')))
 
-app.get('/metrics/:id', (req: any, res: any) => {
-  Mhandler.get(req.params.id,(err: Error | null, result?: any) => {
-    if (err) {
-      throw err
+
+app.use('/auth', authRouter)
+
+
+app.get('/', authCheck,(req: any, res: any) => {
+    if(req.session.loggedIn){
+        res.render('index', {name: req.session.user.username})}
+    else {
+        res.render('index', {name: 'unconnected'})
     }
-    res.json(result)
-  })
 })
 
-app.post('/metrics/:id', (req: any, res: any) => {
-    Mhandler.save(req.params.id,req.body,(err: Error | null) => {
-      if (err) {
-        throw err
-      }
-      res.status(200).send()
-    })
-  })
+
+//Deconnexion
+app.get('/logout', (req: any, res: any) => {
+    delete req.session.loggedIn
+    delete req.session.user
+    res.redirect('/auth/login')
+})
+
+///////////////////////////////////////
+//auth router for login and signup ///
+/////////////////////////////////////
+
+//Login page
+authRouter.get('/login', (req: any, res: any) => {
+    res.render('login')
+})
+
+//SignUp page
+authRouter.get('/signup',(req:any,res:any,next:any)=>{
+  res.render('signup')
+})
+
+
+//login to existing account
+authRouter.post('/login', (req: any, res: any, next: any) => {
+    if(req.body.username===""||req.body.password==="")
+        res.status(401).send("Please enter your username and password")
+    else{
+        dbUser.get(req.body.username, (err: Error | null, result?: User) => {
+            if (err) res.status(401).send("unable to login")
+            else if (result === undefined || !result.validatePassword(req.body.password)) {
+                res.status(401).send("login info incorrect")
+            } else {
+                req.session.loggedIn = true
+                req.session.user = result
+                // res.status(200).send
+                res.redirect('/')
+            }
+        })}
+})
+
+///Création d'un compte
+authRouter.post('/signup', (req: any, res: any, next: any) => {
+    const { username, email,password  } = req.body
+    if(username===""||email===""||password==""){
+        res.status(401).send("Please enter all the info necessary to the new account)}
+    else{
+        const u = new User(username, email, password,false)
+        dbUser.get(username,(err:Error|null,result?:User)=>{
+            if(result!==undefined){
+                res.status(400).send("username already exist")
+            }
+            else{
+                dbUser.save(u, (err: Error | null) => {
+                    if (err){
+                        res.status(404).send("unable to create account")
+                    }
+                    else
+                        res.status(200).send("New account created you may login now")
+                })}
+        })
+    }})
+
+
+
