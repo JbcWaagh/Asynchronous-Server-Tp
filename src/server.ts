@@ -75,11 +75,6 @@ authRouter.get('/login', (req: any, res: any) => {
     res.render('login')
 })
 
-//SignUp page
-authRouter.get('/signup',(req:any,res:any,next:any)=>{
-  res.render('signup')
-})
-
 
 //login to existing account
 authRouter.post('/login', (req: any, res: any, next: any) => {
@@ -98,6 +93,13 @@ authRouter.post('/login', (req: any, res: any, next: any) => {
             }
         })}
 })
+
+
+//SignUp page
+authRouter.get('/signup',(req:any,res:any,next:any)=>{
+  res.render('signup')
+})
+
 
 ///Création d'un compte
 authRouter.post('/signup', (req: any, res: any, next: any) => {

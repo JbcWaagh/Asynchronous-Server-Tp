@@ -12,14 +12,16 @@ export class Metric {
 }
 
 export class MetricsHandler {
-  public db: any
+  private db: any
+  private dbPath:string
 
   constructor(dbPath: string) {
     this.db = LevelDb.open(dbPath)
+    this.dbPath =dbPath
 
   }
 
-  public save(key: number, metrics: Metric[], callback: (error: Error | null) => void) {
+  public save(key: string, metrics: Metric[], callback: (error: Error | null) => void) {
     const ws = WriteStream(this.db)
     ws.on('error', callback)
     ws.on('close', callback)
