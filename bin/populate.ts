@@ -9,23 +9,23 @@ LevelDb.clear('db/users')
 LevelDb.clear('db/sessions')
 console.log('clear of pre-existing data')
 
-const met = [
-  new Metric(`${new Date('2013-11-04 14:00 UTC').getTime()}`, 12),
-  new Metric(`${new Date('2013-11-04 14:15 UTC').getTime()}`, 10),
-  new Metric(`${new Date('2013-11-04 14:30 UTC').getTime()}`, 8),
-  new Metric(`${new Date('2013-11-04 14:45 UTC').getTime()}`, 3),
-  new Metric(`${new Date('2013-11-04 15:00 UTC').getTime()}`, 11),
-  new Metric(`${new Date('2013-11-04 15:15 UTC').getTime()}`, 6)
+const met : Metric[] = [
+  new Metric( '2013-11-04 14:00 UTC' , 12),
+  new Metric(  '2013-11-04 14:15 UTC' , 10),
+  new Metric(  '2013-11-04 14:30 UTC' , 8),
+  new Metric(  '2013-11-04 14:45 UTC' , 3),
+  new Metric(  '2013-11-04 15:00 UTC' , 11),
+  new Metric(  '2013-11-04 15:15 UTC' , 6)
 ]
 
 
-const met2 = [
-  new Metric(`${new Date('2017-06-04 15:00 UTC').getTime()}`, 2),
-  new Metric(`${new Date('2017-07-04 18:15 UTC').getTime()}`, 37),
-  new Metric(`${new Date('2017-08-04 20:30 UTC').getTime()}`, 21),
-  new Metric(`${new Date('2017-09-04 15:56 UTC').getTime()}`, 42),
-  new Metric(`${new Date('2017-10-04 17:34 UTC').getTime()}`, 21),
-  new Metric(`${new Date('2017-11-04 18:15 UTC').getTime()}`, 16)
+const met2 : Metric[]  = [
+  new Metric(  '2017-06-04 15:00 UTC' , 2),
+  new Metric(  '2017-07-04 18:15 UTC' , 37),
+  new Metric(  '2017-08-04 20:30 UTC' , 21),
+  new Metric(  '2017-09-04 15:56 UTC' , 42),
+  new Metric(  '2017-10-04 17:34 UTC' , 21),
+  new Metric(  '2017-11-04 18:15 UTC' , 16)
 
 ]
 
@@ -54,3 +54,5 @@ dbUser.save(user2, (err: Error | null) => {
   if (err) throw err
   console.log('Dark account created')
 })
+
+

@@ -25,37 +25,41 @@
     </form>
  </div>
 
- <canvas id="myChart" style="max-width: 500px;"></canvas>
+ <canvas id="myChart" width="600" height="120"></canvas>
+
  <div >
     <div >
         <% if (metrics) { %>
         <ul>
             <% metrics.forEach(d => { %>
             <li>
-                <form action="/metrics/del/" method="post">
+                <form action="/metrics/del/" method="post" class="container">
                     timestamp: <%= d.timestamp %> <br/>
                     value: <%= d.value %> <br/>
-                    <button value="<%= d.timestamp %>" type="submit" name="timestamp">delete</button>
+                    <button class="btn btn-danger" value="<%= d.timestamp %>" type="submit" name="timestamp">delete</button>
                 </form>
             </li>
             <% }) %>
         </ul>
         <% } %>
     </div>
-    <canvas id="myChart" width="600" height="120"></canvas>
+  
 </div>
 
 </div>
 <script>
 
 var ctx = document.getElementById("myChart").getContext('2d');
-var metrics = <%- JSON.stringify(metrics) %>;
+var metrics = <% -JSON.stringify(metrics) %>;
+console.log(metrics)
 var ts=[]
 var values=[]
+
 metrics.forEach(metrics=>{
     ts.push(metrics.timestamp)
     values.push(metrics.value)
 })
+
 var myChart = new Chart(ctx, {
     type: 'bar',
     data: {

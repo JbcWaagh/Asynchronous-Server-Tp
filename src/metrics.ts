@@ -22,36 +22,52 @@ export class MetricsHandler {
   }
 
   public save(key: string, metrics: Metric[], callback: (error: Error | null) => void) {
+
+    var value: number
     const ws = WriteStream(this.db)
-    ws.on('error', callback)
-    ws.on('close', callback)
-    metrics.forEach((m: Metric) => {
-      ws.write({ key: `metric:${key}${m.timestamp}`, value: m.value })
+    ws.on('error', (err: Error) => {
+      callback(err)
+    })
+      .on('close', () => {
+        callback(null)
+      })
+      .on("end", () => {
+        callback(null);
+      })
+    metrics.forEach(m => {
+      if (typeof m.value === "string") {
+        value = +m.value
+      }
+      else {
+        value = m.value
+      }
+      ws.write({ key: `metric:${key}:${m.timestamp}`, value: value })
     })
     ws.end()
   }
 
-
-  public get(key:string, callback: (error: Error | null, result?: Metric[]) => void) {
+  public get(key: string, callback: (error: Error | null, result?: Metric[]) => void) {
 
     const rs = this.db.createReadStream()
     var met: Metric[] = []
 
     rs
-        .on("error", (err: Error)=>{
-            callback(err, met)
-        })
+      .on("error", (err: Error) => {
+        callback(err, met)
+      })
 
-        .on("end", () => {
-            callback(null, met)
-        })
-        .on("data", (data: any) => {
-            const [, key2, timestamp] = data.key.split(":")
-            if (key === key2) {
-                met.push(new Metric(timestamp, data.value))       }
+      .on("end", () => {
+        callback(null, met)
+      })
+      .on("data", (data: any) => {
+        const [, key2, timestamp] = data.key.split(":")
+        if (key === key2) {
+          met.push(new Metric(timestamp, data.value))
+        }
 
-        })
-}
+      })
+  }
+
 
   public delete(key: string, timestamp: string, callback: (error: Error | null) => void) {
     const rs = this.db.createReadStream();

@@ -136,10 +136,11 @@ mRouter.use(function (req: any, res: any, next: any) {
 mRouter.get('/',(req:any,res:any,next:any)=>{
 
   metricsHandler.get(req.session.user.username,(err: Error|null,metrics:any)=>{
-      console.log("access metrics")
+      console.log("accessing metrics")
       if(err)
           throw err
       else{
+
           res.render('metrics',{metrics:metrics,user:req.session.user.username})}
   })
 })
@@ -156,3 +157,15 @@ mRouter.post ('/',(req:any,res:any,next:any)=>{
               res.redirect('/metrics/')
       })}
 })
+
+// delete metrics
+mRouter.post('/del/',(req:any,res:any,next:any)=>{
+    metricsHandler.delete(req.session.user.username,req.body.timestamp,(err: Error|null)=>{
+        if(err)
+            throw err
+        else{
+            res.redirect('/metrics/')
+        }
+    })
+})
+
