@@ -3,7 +3,8 @@
 <head>
     <% include partials/head %>
     
-    <script src="/js/Chart.bundle.min.js"> </script>
+    <script src="../node_modules/chart.js/dist/Chart.bundle.min.js"> </script>
+
 
 </head>
 <body>
@@ -24,4 +25,56 @@
     </form>
  </div>
 
-   
+ <canvas id="myChart" style="max-width: 500px;"></canvas>
+ <div >
+    <div >
+        <% if (metrics) { %>
+        <ul>
+            <% metrics.forEach(d => { %>
+            <li>
+                <form action="/metrics/del/" method="post">
+                    timestamp: <%= d.timestamp %> <br/>
+                    value: <%= d.value %> <br/>
+                    <button value="<%= d.timestamp %>" type="submit" name="timestamp">delete</button>
+                </form>
+            </li>
+            <% }) %>
+        </ul>
+        <% } %>
+    </div>
+    <canvas id="myChart" width="600" height="120"></canvas>
+</div>
+
+</div>
+<script>
+
+var ctx = document.getElementById("myChart").getContext('2d');
+var metrics = <%- JSON.stringify(metrics) %>;
+var ts=[]
+var values=[]
+metrics.forEach(metrics=>{
+    ts.push(metrics.timestamp)
+    values.push(metrics.value)
+})
+var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ts,
+        datasets: [{
+            label: '',
+            data: values,
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+});
+</script>
+</body>
