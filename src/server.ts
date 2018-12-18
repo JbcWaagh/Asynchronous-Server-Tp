@@ -17,6 +17,7 @@ const mRouter = express.Router()
 const bodyParser = require('body-parser')
 const path = require('path')
 app.use(express.static(__dirname + '/../node_modules/bootstrap/dist'));
+app.use(express.static(__dirname + '/../node_modules/chart.js/dist'));
 
 const metricsHandler= new MetricsHandler('./db/metrics');
 const authCheck = (req: any, res: any, next: any) => {
@@ -136,7 +137,7 @@ mRouter.use(function (req: any, res: any, next: any) {
 mRouter.get('/',(req:any,res:any,next:any)=>{
 
   metricsHandler.get(req.session.user.username,(err: Error|null,metrics:any)=>{
-      console.log("accessing metrics")
+     
       if(err)
           throw err
       else{

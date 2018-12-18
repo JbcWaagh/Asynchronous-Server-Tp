@@ -3,7 +3,7 @@
 <head>
     <% include partials/head %>
     
-    <script src="../node_modules/chart.js/dist/Chart.bundle.min.js"> </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/0.2.0/Chart.min.js" type="text/javascript"></script>
 
 
 </head>
@@ -25,14 +25,14 @@
     </form>
  </div>
 
- <canvas id="myChart" width="600" height="120"></canvas>
+ 
 
- <div >
+ 
     <div >
         <% if (metrics) { %>
-        <ul>
+        <ul class="list-group">
             <% metrics.forEach(d => { %>
-            <li>
+            <li class="list-group-item">
                 <form action="/metrics/del/" method="post" class="container">
                     timestamp: <%= d.timestamp %> <br/>
                     value: <%= d.value %> <br/>
@@ -43,14 +43,14 @@
         </ul>
         <% } %>
     </div>
-  
+<div class="container" >
+    <canvas id="myChart" width="400" height="80"></canvas>
 </div>
 
-</div>
 <script>
 
 var ctx = document.getElementById("myChart").getContext('2d');
-var metrics = <% -JSON.stringify(metrics) %>;
+var metrics = <%- JSON.stringify(metrics) %>
 console.log(metrics)
 var ts=[]
 var values=[]
